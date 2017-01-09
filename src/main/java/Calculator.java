@@ -58,10 +58,13 @@ public class Calculator {
     private int k;
 
     /**
-     * An array used to count the occurence of all states
+     * An array used to count the occurence of all states for all data in a file
      */
     private int[] categoryCounterAll;
 
+    /**
+     * A list used to save the occurence of all states for every single fish-data
+     */
     private List<int[]> categoryCounterForEachLine;
 
     /**
@@ -74,8 +77,12 @@ public class Calculator {
         categoryCounterForEachLine = new LinkedList<>();
     }
 
+    //TODO noch wahrscheinlichkeiten berechnen anhand der daten für alle
+    //Wertebereich festelgen fuer single und group? statt standardwert
+
     /**
-     *
+     * Gets the differences from the list of position, gets the status for each difference and
+     * counts it in an array for each fish and in an array for all fish in the file
      * @param positions
      * @return
      */
@@ -129,7 +136,7 @@ public class Calculator {
      * @param second    targetposition
      * @return  vector with [0] = x, [1] = y
      */
-    public double[] getVector(double[] first, double[] second){
+    private double[] getVector(double[] first, double[] second){
         double[] v = {second[0] - first[0], second[1] - first[1]};
         return v;
     }
@@ -140,7 +147,7 @@ public class Calculator {
      * @param second    second vector
      * @return  difference (vector2_x - vector1_x, vector2_y - vector1_y)
      */
-    public double[] getDifference(double[] first, double[] second){
+    private double[] getDifference(double[] first, double[] second){
         double[] v = {second[0] - first[0], second[1] - first[1]};
         return v;
     }
@@ -150,7 +157,7 @@ public class Calculator {
      * @param difference    the difference to be calculated
      * @return the status as an integer
      */
-    public int findStatusOfDifference(double[] difference){
+    private int findStatusOfDifference(double[] difference){
         double x = difference[0];
         double y = difference[1];
 

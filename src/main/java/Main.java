@@ -18,7 +18,9 @@ public class Main {
         List<double[][]> trainAlonePositions = Reader.readPositionsFromFile(pathToTrainAlone);
         List<double[][]> trainGroupsPositions = Reader.readPositionsFromFile(pathToTrainGroup);
 
+        //train-files auslesen und damit algorithmus "fuettern".
 
+        // dann k wert bestimmen anhand der werte fuer eval-files
 
 
 
