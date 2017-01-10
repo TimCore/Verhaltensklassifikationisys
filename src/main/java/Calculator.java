@@ -77,6 +77,9 @@ public class Calculator {
      */
     private double counter;
 
+
+
+
     /**
      * Constructor
      * @param k: The threshold value to categorize the difference of the vectors
@@ -89,6 +92,7 @@ public class Calculator {
         this.counter = 0;
         categoryToCategory = new int[9][9];
     }
+
 
     /**
      * Calculates the chance for all transitions between two states in percent.
@@ -106,6 +110,7 @@ public class Calculator {
         return dummy;
     }
 
+
     /**
      * Calculates the chance for all transitions between two states as double values.
      * @param positions List of positions
@@ -114,7 +119,7 @@ public class Calculator {
     public double[][] getChanceForEachCategory(List<double[][]> positions){
 
         double[][] chanceForEachCategory = new double[9][9];
-        findTransitionsBetweenCategories(positions);
+        findTransitionsBetweenCategoriesForAll(positions);
         for(int i = 0; i < 9; i++ ){
             for(int j = 0; j < 9; j++ ){
                 chanceForEachCategory[i][j] = categoryToCategory[i][j] / counter;
@@ -123,11 +128,12 @@ public class Calculator {
         return chanceForEachCategory;
     }
 
+
     /**
      * Initializes an array with the amount of all transitions from one status to another and increments a counter for the total amount of transitions
      * @param positions A list containing all positions
      */
-    public void findTransitionsBetweenCategories(List<double[][]> positions){
+    public void findTransitionsBetweenCategoriesForAll(List<double[][]> positions){
 
         List<double[][]> differences = getDifferencesForAllAsList(positions);
         for(int i = 0; i < differences.size(); i++){  //for all lines in the file (all fish)
@@ -139,6 +145,25 @@ public class Calculator {
     }
 
 
+    /**
+     * Creates for every fish an array with the states of its movement and returns them in a list
+     * @param positions     the data of all positions
+     * @return              list of arrays with states for each fish
+     */
+    public LinkedList<int[]> findStatesForEachIndividuum(List<double[][]> positions){
+
+        LinkedList<int[]> states= new LinkedList<>();
+        LinkedList<double[][]> differences = getDifferencesForAllAsList(positions);
+        for(int i = 0; i < differences.size(); i++){  //for all lines in the file (all fish)
+            int[] statesOfIndividuum = new int[differences.get(i).length];
+            for(int j = 0; j < differences.get(i).length-1; j++){
+                statesOfIndividuum[j] = findStatusOfDifference(differences.get(i)[j]);
+            }
+            states.add(statesOfIndividuum);
+        }
+        return states;
+    }
+
 
     /**
      * Calculates the differences for the whole txt-file from a list of positions
@@ -147,19 +172,10 @@ public class Calculator {
      */
     private LinkedList<double[][]> getDifferencesForAllAsList(List<double[][]> positions){
 
-        //create list of vectors from list of positions
-        LinkedList<double[][]> vectorList = new LinkedList<>();
-        for(int i = 0; i < positions.size(); i++){ //for each line in the list of positions
-            double[][] vectors = new double[positions.get(i).length-1][2];
-            for(int j = 0; j < positions.get(i).length-1; j++){
-                vectors[j] = getVector(positions.get(i)[j], positions.get(i)[j+1]);
-            }
-            vectorList.add(vectors);
-        }
         //create list of differences from list of vectors
         LinkedList<double[][]> differenceList = new LinkedList<>();
-        for(int i = 0; i < vectorList.size(); i++){ //for each line of the vectorList
-            double[][] differences = getDifferencesForOneLine(vectorList.get(i));
+        for(int i = 0; i < positions.size(); i++){ //for each line of the vectorList
+            double[][] differences = getDifferencesForOneLine(positions.get(i));
             differenceList.add(differences);
         }
         return differenceList;
@@ -187,6 +203,7 @@ public class Calculator {
         return differences;
     }
 
+
     /**
      * calculates a vector from two positions
      * @param first     startposition
@@ -199,6 +216,7 @@ public class Calculator {
         return v;
     }
 
+
     /**
      * Calculates the difference of two vectors
      * @param first     first vector
@@ -210,6 +228,7 @@ public class Calculator {
         double[] v = {second[0] - first[0], second[1] - first[1]};
         return v;
     }
+
 
     /**
      *  Calculates the status of the difference by comparing them to k
