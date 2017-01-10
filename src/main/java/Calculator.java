@@ -129,7 +129,7 @@ public class Calculator {
      */
     public void findTransitionsBetweenCategories(List<double[][]> positions){
 
-        List<double[][]> differences = getDifferencesAsList(positions);
+        List<double[][]> differences = getDifferencesForAllAsList(positions);
         for(int i = 0; i < differences.size(); i++){  //for all lines in the file (all fish)
             for(int j = 0; j < differences.get(i).length-1; j++){
                 categoryToCategory[findStatusOfDifference(differences.get(i)[j])][findStatusOfDifference(differences.get(i)[j+1])]++;
@@ -138,12 +138,14 @@ public class Calculator {
         }
     }
 
+
+
     /**
      * Calculates the differences for the whole txt-file from a list of positions
      * @param positions List of Positions
      * @return differences as List
      */
-    private LinkedList<double[][]> getDifferencesAsList(List<double[][]> positions){
+    private LinkedList<double[][]> getDifferencesForAllAsList(List<double[][]> positions){
 
         //create list of vectors from list of positions
         LinkedList<double[][]> vectorList = new LinkedList<>();
@@ -157,14 +159,32 @@ public class Calculator {
         //create list of differences from list of vectors
         LinkedList<double[][]> differenceList = new LinkedList<>();
         for(int i = 0; i < vectorList.size(); i++){ //for each line of the vectorList
-            double[][] differences = new double[vectorList.get(i).length-1][2];
-            for(int j = 0; j < vectorList.get(i).length-1; j++){
-                differences[j] = getDifference(vectorList.get(i)[j], vectorList.get(i)[j+1]);
-            }
+            double[][] differences = getDifferencesForOneLine(vectorList.get(i));
             differenceList.add(differences);
         }
-
         return differenceList;
+    }
+
+
+    /**
+     * calculates the differences for the coordinates of a single fish and returns them as a twodimensional double-array
+     * @param positions   a twodimensional double array of positions
+     * @return              the differences between the vectors calculated from the positions
+     */
+    public double[][] getDifferencesForOneLine(double[][] positions){
+
+        //positions -> vectors
+        double[][] vectors = new double[positions.length-1][2];
+        for(int i = 0; i < positions.length-1; i++){
+            vectors[i] = getVector(positions[i], positions[i+1]);
+        }
+
+        //vectors -> differences
+        double[][] differences = new double[vectors.length-1][2];
+        for(int i = 0; i < vectors.length-1; i++){
+            differences[i] = getDifference(vectors[i], vectors[i+1]);
+        }
+        return differences;
     }
 
     /**
