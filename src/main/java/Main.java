@@ -21,9 +21,12 @@ public class Main {
         List<double[][]> trainGroupsPositions = Reader.readPositionsFromFile(pathToTrainGroup);
 
         Calculator calc = new Calculator(5);
-        double[] categoriesAlone = calc.getChanceForEachCategoryInPercent(evalAlonePositions);
+        double[][] categoriesAlone = calc.getChanceForEachCategoryInPercent(evalAlonePositions);
         for(int i = 0; i < categoriesAlone.length; i++){
-            System.out.println(i+1 + ": " + categoriesAlone[i]);
+            for(int j = 0; j < categoriesAlone[i].length; j++){
+                int dummy = j+1;
+                System.out.println(i+1 + "," + dummy + ": " + categoriesAlone[i][j]);
+            }
         }
 
         System.out.println();
@@ -31,9 +34,12 @@ public class Main {
         System.out.println();
 
 
-        double[] categoriesGroup = calc.getChanceForEachCategoryInPercent(evalGroupPositions);
+        double[][] categoriesGroup = calc.getChanceForEachCategoryInPercent(evalGroupPositions);
         for(int i = 0; i < categoriesGroup.length; i++){
-            System.out.println(i+1 + ": " + categoriesGroup[i]);
+            for(int j = 0; j < categoriesGroup[i].length; j++){
+                int dummy = j+1;
+                System.out.println(i+1 + "," + dummy + ": " + categoriesGroup[i][j]);
+            }
         }
 
         //train-files auslesen und damit algorithmus "fuettern".

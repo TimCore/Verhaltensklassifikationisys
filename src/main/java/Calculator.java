@@ -1,4 +1,3 @@
-import java.util.DoubleSummaryStatistics;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,6 +62,8 @@ public class Calculator {
      */
     private int[] categoryCounterAll;
 
+    private int[][] categoryToCategory;
+
     /**
      * A list used to save the occurence of all states for every single fish-data
      */
@@ -82,9 +83,11 @@ public class Calculator {
         categoryCounterAll = new int[9];
         categoryCounterForEachLine = new LinkedList<>();
         this.counter = 0;
+        categoryToCategory = new int[9][9];
     }
 
-    // TODO Wertebereich festlegen fuer single und group? statt standardwert
+    // TODO Wahrscheinlichkeiten ausgeben fuer Uebergang von Differnence zu Difference
+    // -> 9 x 9 Matrix, AA zu AA, AA zu AB, ...
 
 
     /**
@@ -92,37 +95,34 @@ public class Calculator {
      * @param positions
      * @return
      */
-    public double[] getChanceForEachCategoryInPercent(List<double[][]> positions){
+    public double[][] getChanceForEachCategoryInPercent(List<double[][]> positions){
 
-        double[] chanceForEachCategory = new double[9];
-        findAmountsForEachCategory(positions);
+        double[][] chanceForEachCategory = new double[9][9];
+        findTransitionsBetweenCategories(positions);
         for(int i = 0; i < 9; i++ ){
-            chanceForEachCategory[i] = categoryCounterAll[i] / counter;
+            for(int j = 0; j < 9; j++ ){
+                chanceForEachCategory[i][j] = categoryToCategory[i][j] / counter;
+            }
         }
         return chanceForEachCategory;
     }
 
-
     /**
-     * Gets the differences from the list of position, gets the status for each difference and
-     * counts it in an array for each fish and in an array for all fish in the file
-     * @param positions
+     * Initializes an array with the amount of all transitions from one status to another and increments a counter for the total amount of transitions
+     * @param positions A list containing all positions
      */
-    public void findAmountsForEachCategory(List<double[][]> positions){
+    public void findTransitionsBetweenCategories(List<double[][]> positions){ //TODO hiermit 9 x 9 Array befuellen. status holen, in zeile gehen, anderen status holen und in spalte gehen. dann inc
 
         List<double[][]> differences = getDifferencesAsList(positions);
 
-        for(int i = 0; i < differences.size()-1; i++){  //for all lines in the file (all fish)
-            int[] categoryCounter = new int[9];
-            for(double[] diff : differences.get(i)){    //for each line in the file (single fish)
-                int status = findStatusOfDifference(diff);
-                categoryCounter[status]++;
-                categoryCounterAll[status]++;
+        for(int i = 0; i < differences.size(); i++){  //for all lines in the file (all fish)
+            for(int j = 0; j < differences.get(i).length-1; j++){
+                categoryToCategory[findStatusOfDifference(differences.get(i)[j])][findStatusOfDifference(differences.get(i)[j+1])]++;
                 counter++;
             }
-            categoryCounterForEachLine.add(categoryCounter);
         }
     }
+
 
     /**
      * Calculates the differences for the whole txt-file from a list of positions
