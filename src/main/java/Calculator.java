@@ -62,6 +62,9 @@ public class Calculator {
      */
     private int[] categoryCounterAll;
 
+    /**
+     * An array containing the chances for all transitions between two states in percent
+     */
     private int[][] categoryToCategory;
 
     /**
@@ -91,12 +94,26 @@ public class Calculator {
 
 
     /**
-     * Calculates the
-     * @param positions
-     * @return
+     * Calculates the chance for all transitions between two states in percent.
+     * @param positions List of positions
+     * @return twodimensional double array with 9x9 for each chance in percent
      */
     public double[][] getChanceForEachCategoryInPercent(List<double[][]> positions){
+        double[][] dummy = getChanceForEachCategory(positions);
+        for(int i = 0; i < 9; i++ ){
+            for(int j = 0; j < 9; j++ ){
+                dummy[i][j] = dummy[i][j] * 100;
+            }
+        }
+        return dummy;
+    }
 
+    /**
+     * Calculates the chance for all transitions between two states as double values.
+     * @param positions List of positions
+     * @return twodimensional double array with 9x9 with the values for each chance
+     */
+    public double[][] getChanceForEachCategory(List<double[][]> positions){
         double[][] chanceForEachCategory = new double[9][9];
         findTransitionsBetweenCategories(positions);
         for(int i = 0; i < 9; i++ ){
@@ -122,7 +139,6 @@ public class Calculator {
             }
         }
     }
-
 
     /**
      * Calculates the differences for the whole txt-file from a list of positions
