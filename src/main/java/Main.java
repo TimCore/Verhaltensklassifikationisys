@@ -12,7 +12,7 @@ public class Main {
     private static String pathToTrainAlone = Paths.get("", "train_alone.txt").toAbsolutePath().toString();
     private static String pathToTrainGroup = Paths.get("", "train_group.txt").toAbsolutePath().toString();
 
-    private int k = 5; //TODO Double verwenden?
+    //private int k = 5; //TODO Double verwenden?
 
     public static void main(String[] args){
         List<double[][]> evalAlonePositions = Reader.readPositionsFromFile(pathToEvalAlone);
@@ -20,32 +20,29 @@ public class Main {
         List<double[][]> trainAlonePositions = Reader.readPositionsFromFile(pathToTrainAlone);
         List<double[][]> trainGroupsPositions = Reader.readPositionsFromFile(pathToTrainGroup);
 
-        Calculator calc = new Calculator(5);
-        double[][] categoriesAlone = calc.getChanceForEachCategoryInPercent(evalAlonePositions);
-        for(int i = 0; i < categoriesAlone.length; i++){
-            for(int j = 0; j < categoriesAlone[i].length; j++){
-                int dummy = j+1;
-                System.out.println(i+1 + "," + dummy + ": " + categoriesAlone[i][j]);
+        for(double k = -4; k <= 20; k+= 0.1){
+
+            Calculator calc = new Calculator(k);
+
+            double[][] categoriesAlone = calc.getChanceForEachCategoryInPercent(trainAlonePositions);
+            double[][] categoriesGroup = calc.getChanceForEachCategoryInPercent(trainGroupsPositions);
+
+            LinkedList<int[]> statesForSingle = calc.findStatesForEachIndividuum(evalAlonePositions);
+            LinkedList<int[]> statesForGroup = calc.findStatesForEachIndividuum(evalGroupPositions);
+
+            Eval eval = new Eval(categoriesAlone, categoriesGroup);
+
+            double alone = eval.checkAccuracy(eval.detectSocialForm(statesForSingle), 0);
+            double group = eval.checkAccuracy(eval.detectSocialForm(statesForGroup), 1);
+
+            if(alone >= 0.8 && group >= 0.8){
+                System.out.println(k);
+                System.out.println("Alone: " + alone);
+                System.out.println("Group: " + group);
             }
         }
 
-        System.out.println();
-        System.out.println("-------------------------");
-        System.out.println();
 
-
-        double[][] categoriesGroup = calc.getChanceForEachCategoryInPercent(evalGroupPositions);
-        for(int i = 0; i < categoriesGroup.length; i++){
-            for(int j = 0; j < categoriesGroup[i].length; j++){
-                int dummy = j+1;
-                System.out.println(i+1 + "," + dummy + ": " + categoriesGroup[i][j]);
-            }
-        }
-
-
-        //train-files auslesen und damit algorithmus "fuettern".
-
-        // dann k wert bestimmen anhand der werte fuer eval-files
 
 
 

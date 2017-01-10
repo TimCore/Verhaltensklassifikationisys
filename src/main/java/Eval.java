@@ -5,19 +5,19 @@ import java.util.LinkedList;
  */
 public class Eval {
 
-    private static final int SINGLE = 0;
+    private static final int ALONE = 0;
     private static final int GROUP = 1;
 
-    private double[][] chancesForCategoriesSingle;
+    private double[][] chancesForCategoriesAlone;
     private double[][] chancesForCategoriesGroup;
 
     /**
      * Constructor
-     * @param chancesForCategoriesSingle
+     * @param chancesForCategoriesAlone
      * @param chancesForCategoriesGroup
      */
-    public Eval(double[][] chancesForCategoriesSingle, double[][] chancesForCategoriesGroup){
-        this.chancesForCategoriesSingle = chancesForCategoriesSingle;
+    public Eval(double[][] chancesForCategoriesAlone, double[][] chancesForCategoriesGroup){
+        this.chancesForCategoriesAlone = chancesForCategoriesAlone;
         this.chancesForCategoriesGroup = chancesForCategoriesGroup;
     }
 
@@ -29,14 +29,14 @@ public class Eval {
     public int[] detectSocialForm(LinkedList<int[]> movements){
         int[] result = new int[movements.size()];
         for(int i = 0; i < movements.size(); i++){
-            double single = 0;
+            double alone = 0;
             double group = 0;
             for(int j = 0; j < movements.get(i).length-1; j++){
-                single += chancesForCategoriesSingle[movements.get(i)[j]][movements.get(i)[j+1]];
+                alone += chancesForCategoriesAlone[movements.get(i)[j]][movements.get(i)[j+1]];
                 group += chancesForCategoriesGroup[movements.get(i)[j]][movements.get(i)[j+1]];
             }
-            if(single > group){
-                result[i] = SINGLE;
+            if(alone > group){
+                result[i] = ALONE;
             }else{
                 result[i] = GROUP;
             }

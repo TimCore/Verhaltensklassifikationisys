@@ -55,7 +55,7 @@ public class Calculator {
     /**
      * The threshold value to categorize the difference of the vectors
      */
-    private int k;
+    private double k;
 
     /**
      * An array used to count the occurence of all states for all data in a file
@@ -84,7 +84,7 @@ public class Calculator {
      * Constructor
      * @param k: The threshold value to categorize the difference of the vectors
      */
-    public Calculator(int k){
+    public Calculator(double k){
 
         this.k = k;
         categoryCounterAll = new int[9];
