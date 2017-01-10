@@ -1,3 +1,4 @@
+import java.util.DoubleSummaryStatistics;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,6 +69,11 @@ public class Calculator {
     private List<int[]> categoryCounterForEachLine;
 
     /**
+     * Used to count the number of differences
+     */
+    private double counter;
+
+    /**
      * Constructor
      * @param k: The threshold value to categorize the difference of the vectors
      */
@@ -75,18 +81,34 @@ public class Calculator {
         this.k = k;
         categoryCounterAll = new int[9];
         categoryCounterForEachLine = new LinkedList<>();
+        this.counter = 0;
     }
 
-    //TODO noch wahrscheinlichkeiten berechnen anhand der daten für alle
-    //Wertebereich festelgen fuer single und group? statt standardwert
+    // TODO Wertebereich festlegen fuer single und group? statt standardwert
+
+
+    /**
+     * Calculates the
+     * @param positions
+     * @return
+     */
+    public double[] getChanceForEachCategoryInPercent(List<double[][]> positions){
+
+        double[] chanceForEachCategory = new double[9];
+        findAmountsForEachCategory(positions);
+        for(int i = 0; i < 9; i++ ){
+            chanceForEachCategory[i] = categoryCounterAll[i] / counter;
+        }
+        return chanceForEachCategory;
+    }
+
 
     /**
      * Gets the differences from the list of position, gets the status for each difference and
      * counts it in an array for each fish and in an array for all fish in the file
      * @param positions
-     * @return
      */
-    public void getAmountsForEachCategory(List<double[][]> positions){
+    public void findAmountsForEachCategory(List<double[][]> positions){
 
         List<double[][]> differences = getDifferencesAsList(positions);
 
@@ -96,6 +118,7 @@ public class Calculator {
                 int status = findStatusOfDifference(diff);
                 categoryCounter[status]++;
                 categoryCounterAll[status]++;
+                counter++;
             }
             categoryCounterForEachLine.add(categoryCounter);
         }
