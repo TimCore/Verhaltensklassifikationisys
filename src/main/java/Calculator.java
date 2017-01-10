@@ -82,6 +82,7 @@ public class Calculator {
      * @param k: The threshold value to categorize the difference of the vectors
      */
     public Calculator(int k){
+
         this.k = k;
         categoryCounterAll = new int[9];
         categoryCounterForEachLine = new LinkedList<>();
@@ -89,16 +90,13 @@ public class Calculator {
         categoryToCategory = new int[9][9];
     }
 
-    // TODO Wahrscheinlichkeiten ausgeben fuer Uebergang von Differnence zu Difference
-    // -> 9 x 9 Matrix, AA zu AA, AA zu AB, ...
-
-
     /**
      * Calculates the chance for all transitions between two states in percent.
      * @param positions List of positions
      * @return twodimensional double array with 9x9 for each chance in percent
      */
     public double[][] getChanceForEachCategoryInPercent(List<double[][]> positions){
+
         double[][] dummy = getChanceForEachCategory(positions);
         for(int i = 0; i < 9; i++ ){
             for(int j = 0; j < 9; j++ ){
@@ -114,6 +112,7 @@ public class Calculator {
      * @return twodimensional double array with 9x9 with the values for each chance
      */
     public double[][] getChanceForEachCategory(List<double[][]> positions){
+
         double[][] chanceForEachCategory = new double[9][9];
         findTransitionsBetweenCategories(positions);
         for(int i = 0; i < 9; i++ ){
@@ -128,10 +127,9 @@ public class Calculator {
      * Initializes an array with the amount of all transitions from one status to another and increments a counter for the total amount of transitions
      * @param positions A list containing all positions
      */
-    public void findTransitionsBetweenCategories(List<double[][]> positions){ //TODO hiermit 9 x 9 Array befuellen. status holen, in zeile gehen, anderen status holen und in spalte gehen. dann inc
+    public void findTransitionsBetweenCategories(List<double[][]> positions){
 
         List<double[][]> differences = getDifferencesAsList(positions);
-
         for(int i = 0; i < differences.size(); i++){  //for all lines in the file (all fish)
             for(int j = 0; j < differences.get(i).length-1; j++){
                 categoryToCategory[findStatusOfDifference(differences.get(i)[j])][findStatusOfDifference(differences.get(i)[j+1])]++;
@@ -176,6 +174,7 @@ public class Calculator {
      * @return  vector with [0] = x, [1] = y
      */
     private double[] getVector(double[] first, double[] second){
+
         double[] v = {second[0] - first[0], second[1] - first[1]};
         return v;
     }
@@ -187,6 +186,7 @@ public class Calculator {
      * @return  difference (vector2_x - vector1_x, vector2_y - vector1_y)
      */
     private double[] getDifference(double[] first, double[] second){
+
         double[] v = {second[0] - first[0], second[1] - first[1]};
         return v;
     }
@@ -197,6 +197,7 @@ public class Calculator {
      * @return the status as an integer
      */
     private int findStatusOfDifference(double[] difference){
+
         double x = difference[0];
         double y = difference[1];
 
