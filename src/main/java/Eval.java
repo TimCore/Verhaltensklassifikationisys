@@ -5,8 +5,8 @@ import java.util.LinkedList;
  */
 public class Eval {
 
-    private static final int ALONE = 0;
-    private static final int GROUP = 1;
+    public static final int ALONE = 0;
+    public static final int GROUP = 1;
 
     private double[][] chancesForCategoriesAlone;
     private double[][] chancesForCategoriesGroup;
@@ -22,16 +22,18 @@ public class Eval {
     }
 
     /**
-     *
-     * @param movements
-     * @return
+     *  Calculates for each fish in the list if its more likely it is in a group or alone.
+     *  Adds the chance for the status of each movement in both social forms and chooses the higher value afterwards.
+     * @param movements List of movements
+     * @return array containing alone or group
      */
     public int[] detectSocialForm(LinkedList<int[]> movements){
         int[] result = new int[movements.size()];
         for(int i = 0; i < movements.size(); i++){
-            double alone = 0;
-            double group = 0;
+            double alone = 0.0;
+            double group = 0.0;
             for(int j = 0; j < movements.get(i).length-1; j++){
+
                 alone += chancesForCategoriesAlone[movements.get(i)[j]][movements.get(i)[j+1]];
                 group += chancesForCategoriesGroup[movements.get(i)[j]][movements.get(i)[j+1]];
             }

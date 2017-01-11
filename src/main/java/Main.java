@@ -20,26 +20,26 @@ public class Main {
         List<double[][]> trainAlonePositions = Reader.readPositionsFromFile(pathToTrainAlone);
         List<double[][]> trainGroupsPositions = Reader.readPositionsFromFile(pathToTrainGroup);
 
-        for(double k = -4; k <= 20; k+= 0.1){
-
+        for(double k = 0.0; k <= 5.0; k += 10){
+            //System.out.println(k);
             Calculator calc = new Calculator(k);
 
-            double[][] categoriesAlone = calc.getChanceForEachCategoryInPercent(trainAlonePositions);
-            double[][] categoriesGroup = calc.getChanceForEachCategoryInPercent(trainGroupsPositions);
+            double[][] categoriesAlone = calc.getChanceAsLogarithmForEachCategory(trainAlonePositions);
+            double[][] categoriesGroup = calc.getChanceAsLogarithmForEachCategory(trainGroupsPositions);
 
             LinkedList<int[]> statesForSingle = calc.findStatesForEachIndividuum(evalAlonePositions);
             LinkedList<int[]> statesForGroup = calc.findStatesForEachIndividuum(evalGroupPositions);
 
             Eval eval = new Eval(categoriesAlone, categoriesGroup);
 
-            double alone = eval.checkAccuracy(eval.detectSocialForm(statesForSingle), 0);
-            double group = eval.checkAccuracy(eval.detectSocialForm(statesForGroup), 1);
+            double alone = eval.checkAccuracy(eval.detectSocialForm(statesForSingle), Eval.ALONE);
+            double group = eval.checkAccuracy(eval.detectSocialForm(statesForGroup), Eval.GROUP);
 
-            if(alone >= 0.8 && group >= 0.8){
+            //if(alone >= 0.8 && group >= 0.8){
                 System.out.println(k);
                 System.out.println("Alone: " + alone);
                 System.out.println("Group: " + group);
-            }
+            //}
         }
 
 

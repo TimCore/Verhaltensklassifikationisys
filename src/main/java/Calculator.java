@@ -90,21 +90,36 @@ public class Calculator {
         categoryCounterAll = new int[9];
         categoryCounterForEachLine = new LinkedList<>();
         this.counter = 0;
-        categoryToCategory = new int[9][9];
+        categoryToCategory = initArray();
+    }
+
+    /**
+     * initializes the array with 1 for each position to prevent calculating with 0
+     * @return initialized two dimensional array with 1 at each position
+     */
+    public int[][] initArray(){
+        int[][] out = new int[9][9];
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                out[i][j] = 1;
+            }
+        }
+        return out;
     }
 
 
     /**
-     * Calculates the chance for all transitions between two states in percent.
+     * Calculates the chance for all transitions between two states as algorithm.
      * @param positions List of positions
-     * @return twodimensional double array with 9x9 for each chance in percent
+     * @return twodimensional double array with 9x9 for each chance as algorithm
      */
-    public double[][] getChanceForEachCategoryInPercent(List<double[][]> positions){
+    public double[][] getChanceAsLogarithmForEachCategory(List<double[][]> positions){    //TODO aendern in logarithmieren
 
         double[][] dummy = getChanceForEachCategory(positions);
         for(int i = 0; i < 9; i++ ){
             for(int j = 0; j < 9; j++ ){
-                dummy[i][j] = dummy[i][j] * 100;
+
+                dummy[i][j] = Math.log(dummy[i][j]);
             }
         }
         return dummy;
@@ -121,8 +136,12 @@ public class Calculator {
         double[][] chanceForEachCategory = new double[9][9];
         findTransitionsBetweenCategoriesForAll(positions);
         for(int i = 0; i < 9; i++ ){
+            double countForLine = 0;
             for(int j = 0; j < 9; j++ ){
-                chanceForEachCategory[i][j] = categoryToCategory[i][j] / counter;
+                countForLine += categoryToCategory[i][j];
+            }
+            for(int j = 0; j < 9; j++ ){
+                chanceForEachCategory[i][j] = categoryToCategory[i][j] / countForLine;
             }
         }
         return chanceForEachCategory;
@@ -139,7 +158,7 @@ public class Calculator {
         for(int i = 0; i < differences.size(); i++){  //for all lines in the file (all fish)
             for(int j = 0; j < differences.get(i).length-1; j++){
                 categoryToCategory[findStatusOfDifference(differences.get(i)[j])][findStatusOfDifference(differences.get(i)[j+1])]++;
-                counter++;
+                //counter++;
             }
         }
     }
