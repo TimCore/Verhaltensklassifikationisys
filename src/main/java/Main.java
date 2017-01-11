@@ -12,7 +12,6 @@ public class Main {
     private static String pathToTrainAlone = Paths.get("", "train_alone.txt").toAbsolutePath().toString();
     private static String pathToTrainGroup = Paths.get("", "train_group.txt").toAbsolutePath().toString();
 
-    //private int k = 5; //TODO Double verwenden?
 
     public static void main(String[] args){
         List<double[][]> evalAlonePositions = Reader.readPositionsFromFile(pathToEvalAlone);
@@ -20,7 +19,7 @@ public class Main {
         List<double[][]> trainAlonePositions = Reader.readPositionsFromFile(pathToTrainAlone);
         List<double[][]> trainGroupsPositions = Reader.readPositionsFromFile(pathToTrainGroup);
 
-        for(double k = -4; k <= 20; k+= 0.1){
+        for(double k = 0; k <= 10; k+= 0.1){
 
             Calculator calc = new Calculator(k);
 
@@ -35,11 +34,11 @@ public class Main {
             double alone = eval.checkAccuracy(eval.detectSocialForm(statesForSingle), 0);
             double group = eval.checkAccuracy(eval.detectSocialForm(statesForGroup), 1);
 
-            if(alone >= 0.8 && group >= 0.8){
+            //if(alone >= 0.8 && group >= 0.8){
                 System.out.println(k);
                 System.out.println("Alone: " + alone);
                 System.out.println("Group: " + group);
-            }
+            //}
         }
 
 
