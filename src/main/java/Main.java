@@ -12,7 +12,6 @@ public class Main {
     private static String pathToTrainAlone = Paths.get("", "train_alone.txt").toAbsolutePath().toString();
     private static String pathToTrainGroup = Paths.get("", "train_group.txt").toAbsolutePath().toString();
 
-    //private int k = 5; //TODO Double verwenden?
 
     public static void main(String[] args){
         List<double[][]> evalAlonePositions = Reader.readPositionsFromFile(pathToEvalAlone);
@@ -20,8 +19,8 @@ public class Main {
         List<double[][]> trainAlonePositions = Reader.readPositionsFromFile(pathToTrainAlone);
         List<double[][]> trainGroupsPositions = Reader.readPositionsFromFile(pathToTrainGroup);
 
-        for(double k = 0.0; k <= 5.0; k += 10){
-            //System.out.println(k);
+        for(double k = 0; k <= 10; k+= 0.1){
+
             Calculator calc = new Calculator(k);
 
             double[][] categoriesAlone = calc.getChanceAsLogarithmForEachCategory(trainAlonePositions);
