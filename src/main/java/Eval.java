@@ -1,14 +1,21 @@
 import java.util.LinkedList;
 
 /**
- * Created by Tim on 10.01.2017.
+ * Calculates the efficiency of the algorithmn
  */
 public class Eval {
 
     public static final int ALONE = 0;
     public static final int GROUP = 1;
 
+    /**
+     * 9x9 Array containing the chance for mvoving from each categorie to another alone
+     */
     private double[][] chancesForCategoriesAlone;
+
+    /**
+     * 9x9 Array containing the chance for mvoving from each categorie to another in a group
+     */
     private double[][] chancesForCategoriesGroup;
 
     /**
@@ -32,7 +39,7 @@ public class Eval {
         for(int i = 0; i < movements.size(); i++){
             double alone = 0.0;
             double group = 0.0;
-            for(int j = 0; j < movements.get(i).length-1; j++){
+            for(int j = 1; j < movements.get(i).length-1; j++){
 
                 alone += chancesForCategoriesAlone[movements.get(i)[j]][movements.get(i)[j+1]];
                 group += chancesForCategoriesGroup[movements.get(i)[j]][movements.get(i)[j+1]];

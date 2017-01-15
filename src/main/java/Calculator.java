@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Tim on 08.01.2017.
+ * Calculates the chance for the categories and defines the categories
  */
 public class Calculator {
 
@@ -116,13 +116,15 @@ public class Calculator {
     public double[][] getChanceAsLogarithmForEachCategory(List<double[][]> positions){    //TODO aendern in logarithmieren
 
         double[][] dummy = getChanceForEachCategory(positions);
+        double[][] out = new double[9][9];
         for(int i = 0; i < 9; i++ ){
             for(int j = 0; j < 9; j++ ){
-
-                dummy[i][j] = Math.log(dummy[i][j]);
+                out[i][j] = Math.log1p(dummy[i][j]);
+                //out[i][j] = Math.log10(dummy[i][j]);
+                //out[i][j] = Math.log(dummy[i][j]);
             }
         }
-        return dummy;
+        return out;
     }
 
 
